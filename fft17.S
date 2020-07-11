@@ -431,7 +431,7 @@ polymul_8x8:
     sadd16 r2, r2, r12 @ r2 = (c2 + c10) (c3 + c11)
     sadd16 r3, r3, r9 @ r3 = (c4 + c12) (c5 + c13)
     sadd16 r4, r4, r10 @ r4 = (c6 + c14) (c7)
-    ldr r0, buffer_bridge
+    ldr r0, buffer_bridge+4
     stm r0, {r1-r4}
 @ 8x8 mod (x^8 - 1) done
     ldr lr, buffer_bridge
@@ -548,7 +548,7 @@ polymul_8x8:
     ssub16 r3, r3, r9 @ r3 = (c4 - c12) (c5 - c13)
     ssub16 r4, r4, r10 @ r4 = (c6 - c14) (c7)
 @ 8x8 mod (x^8 + 1) done
-    ldr r0, buffer_bridge
+    ldr r0, buffer_bridge+4
     ldm r0, {r5-r8}
     sadd16 r9, r5, r1 @ r9 = d0d1
     ssub16 r10, r5, r1 @ r10 = d8d9
@@ -560,7 +560,7 @@ polymul_8x8:
     ssub16 r6, r8, r4 @ r6 = d14 0
     vmov r3, s0
     ldr lr, [r3] @ lr = real a0a1
-    pkhbt lr, lr, lr, lsl #16 @ lr = a0 a0
+    pkhtb lr, lr, lr, asr #16 @ lr = a1 a1
     sadd16 r9, r9, lr
     sadd16 r11, r11, lr
     sadd16 r1, r1, lr
@@ -569,14 +569,14 @@ polymul_8x8:
     sadd16 r12, r12, lr
     sadd16 r5, r5, lr
     sadd16 r6, r6, lr
-    str r9, [r0, #32]
-    str r11, [r0, #36]
-    str r1, [r0, #40]
-    str r2, [r0, #44]
-    str r10, [r0, #48]
-    str r12, [r0, #52]
-    str r5, [r0, #56]
-    str r6, [r0, #60]
+    str r9, [r0]
+    str r11, [r0, #4]
+    str r1, [r0, #8]
+    str r2, [r0, #12]
+    str r10, [r0, #16]
+    str r12, [r0, #20]
+    str r5, [r0, #24]
+    str r6, [r0, #28]
 @ convolution done 2
     vmov lr, s0
     ldr r1, [lr] @ r1 = a0a1
@@ -588,9 +588,6 @@ polymul_8x8:
     ldr r7, [lr, #1080]
     ldr r8, [lr, #1260]
     ldr r9, [lr, #1440]
-    ldr r10, [lr, #1620]
-    ldr r11, [lr, #1800]
-    ldr r12, [lr, #1980]
     sadd16 r1, r1, r2
     sadd16 r1, r1, r3
     sadd16 r1, r1, r4
@@ -599,34 +596,19 @@ polymul_8x8:
     sadd16 r1, r1, r7
     sadd16 r1, r1, r8
     sadd16 r1, r1, r9
-    sadd16 r1, r1, r10
-    sadd16 r1, r1, r11
-    sadd16 r1, r1, r12
-    ldr r2, [lr, #2160] 
-    ldr r3, [lr, #2340]
-    ldr r4, [lr, #2520]
-    ldr r5, [lr, #2700]
-    ldr r6, [lr, #2880]
     vmov r12, s9 @ r12 = 935519
     vmov r11, s10 @ r11 = 4591
-    sadd16 r2, r2, r3
-    sadd16 r2, r2, r4
-    sadd16 r2, r2, r5
-    sadd16 r2, r2, r6
     ubfx r3, r1, #0, #16
-    ubfx r4, r2, #0, #16
-    add r3, r3, r4 @ r3 = a0 + a90 + ...
     smmulr r4, r3, r12
     mls r3, r4, r11, r3 @ r3 = barrett(a0+a90+...)
     ubfx r5, r1, #16, #16
-    ubfx r6, r2, #16, #16
-    add r5, r5, r6
     smmulr r4, r5, r12
     mls r5, r4, r11, r5
     pkhbt r3, r3, r5, lsl #16
     str r3, [lr]
-@ 14 8 7 4, 12 2 6 1, 3 9 10 13, 5 15 11 16
 
+@ 14 8 7 4, 12 2 6 1, 3 9 10 13, 5 15 11 16
+    ldr r0, buffer_bridge
     ldr r1, [r0] @ r1 = x14x8
     ldr r2, [r0, #32] @ r2 = y14y8
     ldr r5, [r0, #4] @ r5 = x7x4
@@ -675,12 +657,6 @@ polymul_8x8:
     str r4, [lr, #2700]
     str r7, [lr, #1980]
     str r8, [lr, #2880]
-    
-
-    
-
-
-
 
 
     pop {r1-r12, lr}
@@ -688,6 +664,7 @@ polymul_8x8:
 
 buffer_bridge:
     .word buffer
+    .word buffer+32
 mul_buffer_bridge:
     .word mul_buffer
 
