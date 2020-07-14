@@ -226,16 +226,17 @@ fft17_body:
     ssub16 r4, r8, r4 @ r4 = d14 0
     vmov lr, s0
     ldr r5, [lr] @ r5 = a0a1
-    pkhbt r5, r5, r5, lsl #16 @ r5 = a0a0
-    sadd16 r9, r9, r5
-    sadd16 r10, r10, r5
-    sadd16 r11, r11, r5
-    sadd16 r12, r12, r5
-    sadd16 r1, r1, r5
-    sadd16 r2, r2, r5
-    sadd16 r3, r3, r5
-    sadd16 r4, r4, r5
-
+    pkhbt r6, r5, r5, lsl #16 @ r6 = a0a0
+    pkhtb r7, r5, r5, asr #16 @ r7 = a1a1
+    sadd16 r9, r9, r6
+    sadd16 r10, r10, r6
+    sadd16 r11, r11, r6
+    sadd16 r12, r12, r6
+    sadd16 r1, r1, r6
+    sadd16 r2, r2, r6
+    sadd16 r3, r3, r6
+    sadd16 r4, r4, r6
+    vmov s15, r7
     str r9, [r0]
     str r11, [r0, #4]
     str.w r1, [r0, #8]
@@ -428,6 +429,7 @@ fft17_body:
 @ 8x8 mod (x^8 + 1) done
     ldr.w r0, buffer_bridge+4
     ldm r0, {r5-r8}
+    vmov lr, s15
     sadd16 r9, r5, r1 @ r9 = d0d1
     ssub16 r10, r5, r1 @ r10 = d8d9
     sadd16 r11, r6, r2 @ r11 = d2d3
@@ -436,17 +438,18 @@ fft17_body:
     ssub16 r2, r7, r3 @ r2 = d12d13
     sadd16 r3, r8, r4 @ r3 = d6d7
     ssub16 r4, r8, r4 @ r4 = d14 0
-    vmov lr, s0
-    ldr r5, [lr] @ r5 = a0a1
-    pkhtb r5, r5, r5, asr #16 @ r5 = a1a1
-    sadd16 r9, r9, r5
-    sadd16 r10, r10, r5
-    sadd16 r11, r11, r5
-    sadd16 r12, r12, r5
-    sadd16 r1, r1, r5
-    sadd16 r2, r2, r5
-    sadd16 r3, r3, r5
-    sadd16 r4, r4, r5
+    @ vmov lr, s0
+    @ vmov r5, s15
+    @ ldr r5, [lr] @ r5 = a0a1
+    @ pkhtb r5, r5, r5, asr #16 @ r5 = a1a1
+    sadd16 r9, r9, lr
+    sadd16 r10, r10, lr
+    sadd16 r11, r11, lr
+    sadd16 r12, r12, lr
+    sadd16 r1, r1, lr
+    sadd16 r2, r2, lr
+    sadd16 r3, r3, lr
+    sadd16 r4, r4, lr
     @ str r9, [r0] @ r9 = y14y8
     @ str r11, [r0, #4] @ r11 = y7y4
     @ str.w r1, [r0, #8] @ r1 = y12y2
@@ -458,30 +461,31 @@ fft17_body:
 @ convolution done 2
 
 @ 14 8 7 4, 12 2 6 1, 3 9 10 13, 5 15 11 16
-    ldr.w r0, buffer_bridge
+    vmov r0, s0
+    ldr.w lr, buffer_bridge
 @ free : 45678
-    ldr.w r4, [r0] @ r4 = x14x8
-    ldr.w r5, [r0, #4] @ r5 = x7x4
-    ldr.w r6, [r0, #8] @ r6 = x12x2
+    ldr.w r4, [lr] @ r4 = x14x8
+    ldr.w r5, [lr, #4] @ r5 = x7x4
+    ldr.w r6, [lr, #8] @ r6 = x12x2
     pkhbt r7, r4, r9, lsl #16 @ r7 = x14y14
     pkhtb r8, r9, r4, asr #16 @ r8 = x8y8
     pkhbt r4, r5, r11, lsl #16 @ r4 = x7y7
     pkhtb r9, r11, r5, asr #16 @ r9 = x4y4
     pkhbt r5, r6, r1, lsl #16 @ r5 = x12y12
     pkhtb r11, r1, r6, asr #16 @ r11 = x2y2
-    str r7, [lr, #2520]
-    str r8, [lr, #1440]
-    str r4, [lr, #1260]
-    str r9, [lr, #720]
-    str r5, [lr, #2160]
-    str r11, [lr, #360]
+    str r7, [r0, #2520]
+    str r8, [r0, #1440]
+    str r4, [r0, #1260]
+    str r9, [r0, #720]
+    str r5, [r0, #2160]
+    str r11, [r0, #360]
 @ not free : 2, 3, 10, 12
-    ldr.w r1, [r0, #12] @ r1 = x6x1
-    ldr.w r4, [r0, #16] @ r4 = x3x9
-    ldr.w r5, [r0, #20] @ r5 = x10x13
-    ldr.w r6, [r0, #24] @ r6 = x5x15
-    ldr.w r7, [r0, #28] @ r7 = x11x16
-    ldr.w r8, [r0, #60] @ r8 = y11y16
+    ldr.w r1, [lr, #12] @ r1 = x6x1
+    ldr.w r4, [lr, #16] @ r4 = x3x9
+    ldr.w r5, [lr, #20] @ r5 = x10x13
+    ldr.w r6, [lr, #24] @ r6 = x5x15
+    ldr.w r7, [lr, #28] @ r7 = x11x16
+    ldr.w r8, [lr, #60] @ r8 = y11y16
     pkhbt r9, r1, r3, lsl #16 @ r9 = x6y6
     pkhtb r11, r3, r1, asr #16 @ r11 = x1y1
     pkhbt r1, r4, r10, lsl #16 @ r1 = x3y3
@@ -492,23 +496,20 @@ fft17_body:
     pkhtb r12, r2, r6, asr #16 @ r12 = x15y15
     pkhbt r2, r7, r8, lsl #16 @ r2 = x11y11
     pkhtb r6, r8, r7, asr #16 @ r6 = x16y16
-    str r9, [lr, #1080]
-    str r11, [lr, #180]
-    str r1, [lr, #540]
-    str r3, [lr, #1620]
-    str r4, [lr, #1800]
-    str r10, [lr, #2340]
-    str r5, [lr, #900]
-    str r12, [lr, #2700]
-    str r2, [lr, #1980]
-    str r6, [lr, #2880]
+    str r9, [r0, #1080]
+    str r11, [r0, #180]
+    str r1, [r0, #540]
+    str r3, [r0, #1620]
+    str r4, [r0, #1800]
+    str r10, [r0, #2340]
+    str r5, [r0, #900]
+    str r12, [r0, #2700]
+    str r2, [r0, #1980]
+    str r6, [r0, #2880]
     vmov r1, s14
-    str r1, [lr]
-
-    vmov r0, s0
-    add.w r0, r0, #4
-    vmov s0, r0
+    str.w r1, [r0]
     vmov lr, s13
+    add.w r0, r0, #4
     cmp.w r0, lr
     bne.w fft17_body
 
