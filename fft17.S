@@ -6,9 +6,15 @@ buffer: .space 64
 
 .text
 .global fft17
+@ fft17(int* fpad) ; int16_t fpad[1530] ; 0~764 : coefficients of f, 765~1529 : zero
 .type fft17, %function
 fft17:
     push {r1-r12, lr}
+    adr lr, wpad
+    vldm lr, {s1-s10}
+    add.w lr, r0, #180
+    vmov s13, lr
+fft17_body:
     ldr lr, buffer_bridge
     ldr r1, [r0, #1080] @a6
     ldr r2, [r0, #360] @a2
@@ -22,65 +28,46 @@ fft17:
     mov r0, #0
     pkhbt r9, r1, r2, lsl #16 @a6a2
     pkhtb r10, r2, r1, asr #16 @a'6a'2
-    pkhbt r11, r3, r4, lsl #16 @a5a4
-    pkhtb r12, r4, r3, asr #16 @a'5a'4
+    pkhbt r11, r5, r6, lsl #16 @a7a8
+    pkhtb r12, r6, r5, asr #16 @a'7a'8
     ssub16 r1, r0, r9 @-a6 -a2
     ssub16 r2, r0, r10 @-a'6 -a'2
-    str r9, [lr]
-    str r11, [lr, #4]
+    sadd16 r5, r9, r11 @ a6+a7 a2+a8
+    sadd16 r6, r10, r12
+    ssub16 r9, r9, r11 @ a6-a7 a2-a8
+    ssub16 r10, r10, r12
+    ssub16 r11, r0, r11 @ -a7 -a8
+    ssub16 r12, r0, r12
     str r1, [lr, #16]
-    str r10, [lr, #32]
-    str r12, [lr, #36]
     str r2, [lr, #48]
-    ssub16 r11, r0, r11 @-a5 -a4
-    ssub16 r12, r0, r12 @-a'5 -a'4
-    pkhbt r11, r3, r11 @a5 -a4
-    pkhtb r12, r12, r3, asr #16 @a'5 -a'4
-    pkhbt r1, r5, r6, lsl #16 @a7a8
-    pkhtb r2, r6, r5, asr #16
-    pkhbt r3, r7, r8, lsl #16 @a3a1
-    pkhtb r4, r8, r7, asr #16
-    ssub16 r5, r0, r1 
-    ssub16 r6, r0, r2
-    str r11, [lr, #20]
-    str r12, [lr, #52]
-    str r1, [lr, #8]
-    str r2, [lr, #40]
-    str r3, [lr, #12]
-    str r3, [lr, #28]
-    str r4, [lr, #44]
-    str r4, [lr, #60]
-    str r5, [lr, #24]
-    str r6, [lr, #56]
-    ldr r1, [lr]
-    ldr r2, [lr, #4]
-    ldr r3, [lr, #8]
-    ldr r4, [lr, #12]
-    ldr r9, [lr, #32]
-    ldr r10, [lr, #36]
-    ldr r11, [lr, #40]
-    ldr r12, [lr, #44]
-    sadd16 r5, r1, r3
-    sadd16 r6, r2, r4
-    ssub16 r7, r1, r3
-    ssub16 r8, r2, r4
-    sadd16 r1, r9, r11
-    sadd16 r2, r10, r12
-    ssub16 r3, r9, r11
-    ssub16 r4, r10, r12
     str r5, [lr]
-    str r6, [lr, #4]
-    str r7, [lr, #8]
-    str r8, [lr, #12]
-    str r1, [lr, #32]
-    str r2, [lr, #36]
-    str r3, [lr, #40]
-    str r4, [lr, #44]
+    str r6, [lr, #32]
+    str r9, [lr, #8]
+    str r10, [lr, #40]
+    str r11, [lr, #24]
+    str r12, [lr, #56]
+    pkhbt r11, r7, r8, lsl #16 @ r11 = a3a1
+    pkhtb r12, r8, r7, asr #16 @ r12 = a'3 a'1
+    pkhbt r5, r3, r4, lsl #16 @ r5 = a5a4
+    pkhtb r6, r4, r3, asr #16 @ r6 = a'5 a'4
+    sadd16 r2, r5, r11 @ a5+a3 a4+a1
+    sadd16 r1, r6, r12
+    ssub16 r3, r0, r4 @ r3 = -a4 -a'4
+    ssub16 r4, r5, r11 @ a5-a3 a4-a1
+    ssub16 r7, r6, r12
+    pkhbt r8, r5, r3, lsl #16 @ a5 -a4
+    pkhtb r9, r3, r6 @ a'5 -a'4
+    str r11, [lr, #28]
+    str r12, [lr, #60]
+    str r1, [lr, #36]
+    str r7, [lr, #44]
+    str r8, [lr, #20]
+    str r9, [lr, #52]
 @polymul_8x8:
-    adr r0, wpad
-    vldm r0, {s1-s10}
 @ mod (x^4 - 1) part
-    ldm lr, {r1-r4} @ r1 = a0a1, r2 = a2a3, r3 = a4a5, r4 = a6a7
+    ldr r1, [lr]
+    ldr r3, [lr, #8]
+    @ ldm lr, {r1-r4} @ r1 = a0a1, r2 = a2a3, r3 = a4a5, r4 = a6a7
     vmov r5, s1 @ r5 = b0b1
     vmov r6, s2 @ r6 = b2b3
     vmov r7, s3 @ r7 = b4b5
@@ -248,31 +235,7 @@ fft17:
     sadd16 r2, r2, r5
     sadd16 r3, r3, r5
     sadd16 r4, r4, r5
-    @ mov r5, #14 @ r5 = 14
-    @ mov r6, #32768
-    @ vmov lr, s10
-    @ smlawb r7, r5, r9, r6 @ r7 = round(d0/q)
-    @ smlawt r8, r5, r9, r6 @ r8 = round(d1/q)
-    @ pkhbt r9, r7, r8, lsl #16
-    @ smlawb r7, r5, r10, r6 @ r7 = barrett(d8)
-    @ smlawt r8, r5, r10, r6 @ r8 = barrett(d9)
-    @ pkhbt r10, r7, r8, lsl #16 @ r10 = d8d9
-    @ smlawb r7, r5, r11, r6 @ r7 = barrett(d2)
-    @ smlawt r8, r5, r11, r6 @ r8 = barrett(d3)
-    @ pkhbt r11, r7, r8, lsl #16 @ r11 = d2d3
-    @ smlawb r7, r5, r12, r6 @ r7 = barrett(d10)
-    @ smlawt r8, r5, r12, r6 @ r8 = barrett(d11)
-    @ pkhbt r12, r7, r8, lsl #16 @ r12 = d10d11
-    @ smlawb r7, r5, r1, r6 @ r7 = barrett(d4)
-    @ smlawt r8, r5, r1, r6 @ r8 = barrett(d5)
-    @ pkhbt r1, r7, r8, lsl #16 @ r1 = d4d5
-    @ smlawb r7, r5, r2, r6 @ r7 = barrett(d12)
-    @ smlawt r8, r5, r2, r6 @ r8 = barrett(d13)
-    @ pkhbt r2, r7, r8, lsl #16 @ r2 = d12d13
-    @ smlawb r7, r5, r3, r6 @ r7 = barrett(d6)
-    @ smlawt r8, r5, r3, r6 @ r8 = barrett(d7)
-    @ pkhbt r3, r7, r8, lsl #16 @ r3 = d6d7
-    @ smlawb r7, r5, r4, r6 @ r7 = barrett(d14)
+
     str r9, [r0]
     str r11, [r0, #4]
     str.w r1, [r0, #8]
@@ -283,7 +246,35 @@ fft17:
     str.w r4, [r0, #28]
 @ convolution done 1
 
+    vmov r12, s9 @ r12 = 935519
+    vmov r11, s10 @ r11 = 4591
+    ldr r1, [lr] @ r1 = a0a1
+    ldr r2, [lr, #180] @ r2 = a90a91
+    ldr r3, [lr, #360]
+    ldr r4, [lr, #540]
+    ldr r5, [lr, #720]
+    ldr r6, [lr, #900]
+    ldr r7, [lr, #1080]
+    ldr r8, [lr, #1260]
+    ldr r9, [lr, #1440]
+    sadd16 r1, r1, r2
+    sadd16 r1, r1, r3
+    sadd16 r1, r1, r4
+    sadd16 r1, r1, r5
+    sadd16 r1, r1, r6
+    sadd16 r1, r1, r7
+    sadd16 r1, r1, r8
+    sadd16 r1, r1, r9
+    ubfx r3, r1, #0, #16
+    smmulr r4, r3, r12
+    mls r3, r4, r11, r3 @ r3 = barrett(a0+a90+...)
+    ubfx r5, r1, #16, #16
+    smmulr r4, r5, r12
+    mls r5, r4, r11, r5
+    pkhbt r3, r3, r5, lsl #16
+    vmov s14, r3
 
+@ a0 + a90 +... done
 
     ldr lr, buffer_bridge+4
     ldm lr, {r1-r4} @ r1 = a0a1, r2 = a2a3, r3 = a4a5, r4 = a6a7
@@ -456,97 +447,70 @@ fft17:
     sadd16 r2, r2, r5
     sadd16 r3, r3, r5
     sadd16 r4, r4, r5
-    
-
-    str r9, [r0]
-    str r11, [r0, #4]
-    str.w r1, [r0, #8]
-    str.w r3, [r0, #12]
-    str r10, [r0, #16]
-    str r12, [r0, #20]
-    str.w r2, [r0, #24]
-    str.w r4, [r0, #28]
+    @ str r9, [r0] @ r9 = y14y8
+    @ str r11, [r0, #4] @ r11 = y7y4
+    @ str.w r1, [r0, #8] @ r1 = y12y2
+    @ str.w r3, [r0, #12] @ r3 = y6y1
+    @ str r10, [r0, #16] @ r10 = y3y9
+    @ str r12, [r0, #20] @ r12 = y10y13
+    @ str.w r2, [r0, #24] @ r2 = y5y15
+    str.w r4, [r0, #28] @ r4 = y11y16
 @ convolution done 2
-    vmov lr, s0
-    ldr r1, [lr] @ r1 = a0a1
-    ldr r2, [lr, #180] @ r2 = a90a91
-    ldr r3, [lr, #360]
-    ldr r4, [lr, #540]
-    ldr r5, [lr, #720]
-    ldr r6, [lr, #900]
-    ldr r7, [lr, #1080]
-    ldr r8, [lr, #1260]
-    ldr r9, [lr, #1440]
-    sadd16 r1, r1, r2
-    sadd16 r1, r1, r3
-    sadd16 r1, r1, r4
-    sadd16 r1, r1, r5
-    sadd16 r1, r1, r6
-    sadd16 r1, r1, r7
-    sadd16 r1, r1, r8
-    sadd16 r1, r1, r9
-    vmov r12, s9 @ r12 = 935519
-    vmov r11, s10 @ r11 = 4591
-    ubfx r3, r1, #0, #16
-    smmulr r4, r3, r12
-    mls r3, r4, r11, r3 @ r3 = barrett(a0+a90+...)
-    ubfx r5, r1, #16, #16
-    smmulr r4, r5, r12
-    mls r5, r4, r11, r5
-    pkhbt r3, r3, r5, lsl #16
-    str r3, [lr]
 
 @ 14 8 7 4, 12 2 6 1, 3 9 10 13, 5 15 11 16
     ldr.w r0, buffer_bridge
-    ldr.w r1, [r0] @ r1 = x14x8
-    ldr.w r2, [r0, #32] @ r2 = y14y8
+@ free : 45678
+    ldr.w r4, [r0] @ r4 = x14x8
     ldr.w r5, [r0, #4] @ r5 = x7x4
-    ldr.w r6, [r0, #36] @ r6 = y7y4
-    ldr r9, [r0, #8] @ r9 = x12x2
-    ldr r10, [r0, #40] @ r10 = y12y2
-    pkhbt r3, r1, r2, lsl #16 @ r3 = x14y14
-    pkhtb r4, r2, r1, asr #16 @ r4 = x8y8
-    pkhbt r7, r5, r6, lsl #16 @ r7 = x7y7
-    pkhtb r8, r6, r5, asr #16 @ r8 = x4y4
-    pkhbt r11, r9, r10, lsl #16 @ r11 = x12y12
-    pkhtb r12, r10, r9 ,asr #16 @ r12 = x2y2
-    str r3, [lr, #2520]
-    str r4, [lr, #1440]
-    str r7, [lr, #1260]
-    str r8, [lr, #720]
-    str r11, [lr, #2160]
-    str r12, [lr, #360]
+    ldr.w r6, [r0, #8] @ r6 = x12x2
+    pkhbt r7, r4, r9, lsl #16 @ r7 = x14y14
+    pkhtb r8, r9, r4, asr #16 @ r8 = x8y8
+    pkhbt r4, r5, r11, lsl #16 @ r4 = x7y7
+    pkhtb r9, r11, r5, asr #16 @ r9 = x4y4
+    pkhbt r5, r6, r1, lsl #16 @ r5 = x12y12
+    pkhtb r11, r1, r6, asr #16 @ r11 = x2y2
+    str r7, [lr, #2520]
+    str r8, [lr, #1440]
+    str r4, [lr, #1260]
+    str r9, [lr, #720]
+    str r5, [lr, #2160]
+    str r11, [lr, #360]
+@ not free : 2, 3, 10, 12
     ldr.w r1, [r0, #12] @ r1 = x6x1
-    ldr.w r2, [r0, #44] @ r2 = y6y1
-    ldr.w r5, [r0, #16] @ r5 = x3x9
-    ldr.w r6, [r0, #48] @ r6 = y3y9
-    ldr r9, [r0, #20] @ r9 = x10x13
-    ldr r10, [r0, #52] @ r10 = y10y13
-    pkhbt r3, r1, r2, lsl #16 @ r3 = x6y6
-    pkhtb r4, r2, r1, asr #16 @ r4 = x1y1
-    pkhbt r7, r5, r6, lsl #16 @ r7 = x3y3
-    pkhtb r8, r6, r5, asr #16 @ r8 = x9y9
-    pkhbt r11, r9, r10, lsl #16 @ r11 = x10y10
-    pkhtb r12, r10, r9 ,asr #16 @ r12 = x13y13
-    str r3, [lr, #1080]
-    str r4, [lr, #180]
-    str r7, [lr, #540]
-    str r8, [lr, #1620]
-    str r11, [lr, #1800]
-    str r12, [lr, #2340]
-    ldr.w r1, [r0, #24] @ r1 = x5x15
-    ldr.w r2, [r0, #56] @ r2 = y5y15
-    ldr.w r5, [r0, #28] @ r5 = x11x16
-    ldr.w r6, [r0, #60] @ r6 = y11y16
-    pkhbt r3, r1, r2, lsl #16 @ r3 = x5y5
-    pkhtb r4, r2, r1, asr #16 @ r4 = x15y15
-    pkhbt r7, r5, r6, lsl #16 @ r7 = x11y11
-    pkhtb r8, r6, r5, asr #16 @ r8 = x16y16
-    str r3, [lr, #900]
-    str r4, [lr, #2700]
-    str r7, [lr, #1980]
-    str r8, [lr, #2880]
+    ldr.w r4, [r0, #16] @ r4 = x3x9
+    ldr.w r5, [r0, #20] @ r5 = x10x13
+    ldr.w r6, [r0, #24] @ r6 = x5x15
+    ldr.w r7, [r0, #28] @ r7 = x11x16
+    ldr.w r8, [r0, #60] @ r8 = y11y16
+    pkhbt r9, r1, r3, lsl #16 @ r9 = x6y6
+    pkhtb r11, r3, r1, asr #16 @ r11 = x1y1
+    pkhbt r1, r4, r10, lsl #16 @ r1 = x3y3
+    pkhtb r3, r10, r4, asr #16 @ r3 = x9y9
+    pkhbt r4, r5, r12, lsl #16 @ r4 = x10y10
+    pkhtb r10, r12, r5, asr #16 @ r10 = x13y13
+    pkhbt r5, r6, r2, lsl #16 @ r5 = x5y5
+    pkhtb r12, r2, r6, asr #16 @ r12 = x15y15
+    pkhbt r2, r7, r8, lsl #16 @ r2 = x11y11
+    pkhtb r6, r8, r7, asr #16 @ r6 = x16y16
+    str r9, [lr, #1080]
+    str r11, [lr, #180]
+    str r1, [lr, #540]
+    str r3, [lr, #1620]
+    str r4, [lr, #1800]
+    str r10, [lr, #2340]
+    str r5, [lr, #900]
+    str r12, [lr, #2700]
+    str r2, [lr, #1980]
+    str r6, [lr, #2880]
+    vmov r1, s14
+    str r1, [lr]
 
+    vmov r0, s0
+    add.w r0, r0, #4
+    vmov s0, r0
+    vmov lr, s13
+    cmp.w r0, lr
+    bne.w fft17_body
 
     pop {r1-r12, pc}
     @ bx lr
