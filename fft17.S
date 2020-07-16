@@ -514,10 +514,7 @@ fft17_body:
     bne.w fft17_body
 
     pop {r1-r12, pc}
-    @ bx lr
 
-
-@ .space 2
 buffer_bridge:
     .word buffer
     .word buffer+32
@@ -533,8 +530,3 @@ wpad:
     .word 4220778258
     .word 935519
     .word 4591
-
-@    .word 4182573092
-@    .word 117701970
-@    .word 66254782
-@    .word 90372144
