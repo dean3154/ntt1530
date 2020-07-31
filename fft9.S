@@ -1,4 +1,4 @@
-#include "qq_aux.h"
+#include "fft9_aux.h"
 
 .p2align 2,,3
 .syntax unified
@@ -31,9 +31,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -62,9 +62,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -93,9 +93,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -124,9 +124,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -155,9 +155,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -186,9 +186,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -217,9 +217,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -248,9 +248,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -279,9 +279,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -310,9 +310,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -341,9 +341,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -372,9 +372,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -403,9 +403,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -434,9 +434,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -465,9 +465,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #60]
     ldr.w r6, [r0, #120]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -508,9 +508,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -539,9 +539,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -570,9 +570,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -601,9 +601,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -632,9 +632,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -674,9 +674,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -705,9 +705,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -736,9 +736,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -767,9 +767,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -798,9 +798,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -840,9 +840,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -871,9 +871,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -902,9 +902,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -933,9 +933,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
@@ -964,9 +964,9 @@ fft9_body:
     ldr.w r4, [r0]
     ldr.w r5, [r0, #20]
     ldr.w r6, [r0, #40]
-    ubfx r7, r4, #0, #16
+    sbfx r7, r4, #0, #16
     pkhbt r8, r5, r6, lsl #16
-    ubfx r9, r4, #16, #16
+    sbfx r9, r4, #16, #16
     pkhtb r10, r6, r5, asr #16
     smlad r4, r8, r1, r7
     smlad r5, r8, r2, r7
