@@ -26,6 +26,7 @@ wpad:
 @ifft17(fpad, h)
 ifft17:
     push {r2-r12, lr}
+    vpush {s16-s20}
     adr lr, wpad
     vldm lr, {s2-s11}
     vmov s1, r1 @ h
@@ -683,4 +684,5 @@ ifft17_body:
     vmov r2, s17
     cmp.w r0, r2
     bne.w ifft17_body
+    vpop {s16-s20}
     pop {r2-r12, pc}

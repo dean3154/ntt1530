@@ -27,6 +27,7 @@ wpad:
 fft17_byte:
 @ fft17_byte(int16_t* f, int16_t* fpad
     push {r2-r12, lr}
+    vpush {s16-s25}
     adr lr, wpad
     vldm lr, {s2-s11}
     vmov s1, r1
@@ -3375,6 +3376,6 @@ fft17_byte_body2:
 
     vmov r5, s22
     str.w r5, [r0]
-
+    vpop {s16-s25}
     pop {r2-r12, pc}
 

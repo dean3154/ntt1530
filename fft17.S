@@ -25,6 +25,7 @@ wpad:
 fft17:
 @ fft17(int16_t* f, int16_t* fpad
     push {r2-r12, lr}
+    vpush {s16-s20}
     adr lr, wpad
     vldm lr, {s2-s11}
     vmov s1, r1
@@ -1386,5 +1387,6 @@ fft17_body2:
     vmov r2, s18
     cmp.w r0, r2
     bne.w fft17_body2
+    vpop {s16-s20}
     pop {r2-r12, pc}
 

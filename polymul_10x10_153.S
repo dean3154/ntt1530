@@ -6,6 +6,7 @@
 .type polymul_10x10_153, %function
 polymul_10x10_153:
     push {r2-r12, lr}
+    vpush {s16-s21}
     adr lr, wpad
     mov r12, #4591
     movw r11, #18015
@@ -183,7 +184,7 @@ polymul_10x10_153_body:
     vmov r2, s21
     cmp.w r0, r2
     bne.w polymul_10x10_153_body
-
+    vpop {s16-s21}
     pop {r2-r12, pc}
 
 wpad:
