@@ -28,7 +28,7 @@ fft17:
     adr lr, wpad
     vldm lr, {s2-s11}
     vmov s1, r1
-    add.w r1, r0, #88
+    add.w r1, r0, #80
     add.w r2, r0, #180
     vmov s17, r1
     vmov s18, r2
