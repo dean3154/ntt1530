@@ -1,0 +1,212 @@
+% Credits are indicated where needed. The general idea is based on a template by Vel (vel@LaTeXTemplates.com) and Frits Wenneker.
+
+\documentclass[11pt, a4paper]{article} % General settings in the beginning (defines the document class of your paper)
+% 11pt = is the font size
+% A4 is the paper size
+% “article” is your document class
+
+%----------------------------------------------------------------------------------------
+%	Packages
+%----------------------------------------------------------------------------------------
+
+% Necessary
+\usepackage[german,english]{babel} % English and German language 
+\usepackage{booktabs} % Horizontal rules in tables 
+% For generating tables, use “LaTeX” online generator (https://www.tablesgenerator.com)
+\usepackage{comment} % Necessary to comment several paragraphs at once
+\usepackage[utf8]{inputenc} % Required for international characters
+\usepackage[T1]{fontenc} % Required for output font encoding for international characters
+
+% Might be helpful
+\usepackage{amsmath,amsfonts,amsthm} % Math packages which might be useful for equations
+\usepackage{tikz} % For tikz figures (to draw arrow diagrams, see a guide how to use them)
+\usepackage{tikz-cd}
+\usetikzlibrary{positioning,arrows} % Adding libraries for arrows
+\usetikzlibrary{decorations.pathreplacing} % Adding libraries for decorations and paths
+\usepackage{tikzsymbols} % For amazing symbols ;) https://mirror.hmc.edu/ctan/graphics/pgf/contrib/tikzsymbols/tikzsymbols.pdf 
+\usepackage{blindtext} % To add some blind text in your paper
+\usepackage{bm}
+
+
+%---------------------------------------------------------------------------------
+% Additional settings
+%---------------------------------------------------------------------------------
+
+%---------------------------------------------------------------------------------
+% Define your margins
+\usepackage{geometry} % Necessary package for defining margins
+
+\geometry{
+	top=2cm, % Defines top margin
+	bottom=2cm, % Defines bottom margin
+	left=2.2cm, % Defines left margin
+	right=2.2cm, % Defines right margin
+	includehead, % Includes space for a header
+	%includefoot, % Includes space for a footer
+	%showframe, % Uncomment if you want to show how it looks on the page 
+}
+
+\setlength{\parindent}{15pt} % Adjust to set you indent globally 
+
+%---------------------------------------------------------------------------------
+% Define your spacing
+\usepackage{setspace} % Required for spacing
+% Two options:
+\linespread{1.5}
+%\onehalfspacing % one-half-spacing linespread
+
+%----------------------------------------------------------------------------------------
+% Define your fonts
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+
+\usepackage{XCharter} % Use the XCharter font
+
+
+%---------------------------------------------------------------------------------
+% Define your headers and footers
+
+\usepackage{fancyhdr} % Package is needed to define header and footer
+\pagestyle{fancy} % Allows you to customize the headers and footers
+
+%\renewcommand{\sectionmark}[1]{\markboth{#1}{}} % Removes the section number from the header when \leftmark is used
+
+% Headers
+\lhead{} % Define left header
+\chead{\textit{}} % Define center header - e.g. add your paper title
+\rhead{} % Define right header
+
+% Footers
+\lfoot{} % Define left footer
+\cfoot{\footnotesize \thepage} % Define center footer
+\rfoot{ } % Define right footer
+
+%---------------------------------------------------------------------------------
+%	Add information on bibliography
+\usepackage{natbib} % Use natbib for citing
+\usepackage{har2nat} % Allows to use harvard package with natbib https://mirror.reismil.ch/CTAN/macros/latex/contrib/har2nat/har2nat.pdf
+
+% For citing with natbib, you may want to use this reference sheet: 
+% http://merkel.texture.rocks/Latex/natbib.php
+
+%---------------------------------------------------------------------------------
+% Add field for signature (Reference: https://tex.stackexchange.com/questions/35942/how-to-create-a-signature-date-page)
+\newcommand{\signature}[2][5cm]{%
+  \begin{tabular}{@{}p{#1}@{}}
+    #2 \\[2\normalbaselineskip] \hrule \\[0pt]
+    {\small \textit{Signature}} \\[2\normalbaselineskip] \hrule \\[0pt]
+    {\small \textit{Place, Date}}
+  \end{tabular}
+}
+%---------------------------------------------------------------------------------
+%	General information
+%---------------------------------------------------------------------------------
+\title{Size 1530 NTT} % Adds your title
+\author{
+FIRSTNAME LASTNAME % Add your first and last name
+    %\thanks{} % Adds a footnote to your title
+    %\institution{YOUR INSTITUTION} % Adds your institution
+  }
+
+\date{\small \today} % Adds the current date to your “cover” page; leave empty if you do not want to add a date
+
+
+%---------------------------------------------------------------------------------
+%	Define what’s in your document
+%---------------------------------------------------------------------------------
+
+\begin{document}
+
+
+% If you want a cover page, uncomment "\input{coverpage.tex}" and uncomment "\begin{comment}" and "\end{comment}" to comment the following lines
+%\input{coverpage.tex}
+
+%\begin{comment}
+\maketitle % Print your title, author name and date; comment if you want a cover page 
+
+\begin{center} % Center text
+    Word count: XXXX
+% How to check words in a LaTeX document: https://www.overleaf.com/help/85-is-there-a-way-to-run-a-word-count-that-doesnt-include-latex-commands
+\end{center}
+%\end{comment}
+
+%----------------------------------------------------------------------------------------
+% Introduction
+%----------------------------------------------------------------------------------------
+\setcounter{page}{1} % Sets counter of page to 1
+
+\section{Implementation of Size 1530 NTT} % Add a section title
+The components of size 1530 NTT multiplication are radix-17 butterfly, radix-3 butterfly and multiplication of degree-9 polynomials. We first perform a radix-17 butterfly followed by two radix-3 butterflies for each of the two input polynomials, then we perform 153 point-wise multiplications of degree-9 polynomials in different rings. So it is an incomplete NTT. Note that each butterfly should be performed three times, there is less and less benefit to perform butterflies in the last several stages than just performing multiplication of small degree polynomials. That's why we decided to perform multiplications of degree-9 polynomials rather than performing complete 1530 NTT.
+
+\subsection{Radix-17 butterfly Stage} % Add a subsection
+
+By Rader's trick, we can rearrange the coefficients $ f_i $ of a polynomial $ f $ and the indices of the $ 17 $ th-root of unity $ \psi $ to compute the discrete Fourier transform (DFT) $ F_j $ with a cyclic convolution and some additions.
+
+The order of $ f_i $ and $ \psi^k $:
+\[ 
+\hat{f} = (f_{11}, f_{15}, f_5, f_{13}, f_{10}, f_9, f_3, f_1, f_6, f_2, f_{12}, f_4, f_7, f_8, f_{14}, f_{16})
+ \]
+\[ 
+\hat{\psi} = (\psi^{1},\psi^{3},\psi^9,\psi^{10} ,\psi^{13},\psi^5, \psi^{15} ,\psi^{11} ,\psi^{16} ,\psi^{14} ,\psi^{8} ,\psi^7 ,\psi^4 ,\psi^{12},\psi^{2},\psi^{6})
+ \]
+
+The cyclic convolution can be viewed as performing a polynomial multiplication $ \hat{f} * \hat{\psi} $ in $ Z_q[x] / (x^{16} - 1) $. By using the FFT trick, we implement the efficient polynomial multiplication and get $ \hat{F_j} $ which are the points of DFT minus $ f_0 $.
+\[
+\hat{F_j} = F_j - f_0 = \sum_{i = 1}^{16} f_{i} \psi^{ij}, j \in \{1,...,16\}
+\]
+\[
+(\hat{F_{14}},\hat{F_8},\hat{F_7},\hat{F_4},\hat{F_{12}},\hat{F_2},\hat{F_6},\hat{F_1}, \hat{F_3},\hat{F_9},\hat{F_{10}},\hat{F_{13}},\hat{F_5},\hat{F_{15}},\hat{F_{11}},\hat{F_{16}})
+\]
+
+We can obtain $ F_j $ by adding a 16-dimensional vector x to the result above.
+\[
+x = (x_i), x_i = f_0, i \in \{1,...,16\}
+\]
+
+Finally, calculate $ F_0 = \sum_{i = 0}^{16} f_{i} $ and we get all the points of a discrete Fourier transform. That's how we do a radix-17 FFT.
+
+We can further apply CRT to reduce the multiply operations. Also, we can just load the first nine coefficients into registers at the forward radix-17 stage because the last eight coefficients must be zero, however we have to load all the coefficients at the inverse radix-17 stage.  After we CRT map ${(x^{16} - 1)}$ to ${(x^{8} - 1) * (x^{8} + 1)}$ and  ${(x^{8} - 1)}$ to ${(x^{4} - 1) * (x^{4} + 1)}$, we just need to do 96 multiply operations for two 4-by-4 and one 8-by-8 polynomial multiplications.
+
+When CRT map the point-values $ (P_0(x), P_1(x)) $ back to ${(x^{16} - 1)}$ and g is the result, we have to use two multiplications to calculate $ 2^{-1} $.
+\[
+    P_0(x) = (\hat{f}_0(x) + \hat{f}_1(x)) * (\hat{\psi}_0(x) + \hat{\psi}_1(x))
+\]
+\[
+    P_1(x) = (\hat{f}_0(x) - \hat{f}_1(x)) * (\hat{\psi}_0(x) - \hat{\psi}_1(x))
+\]
+\[
+    g = 2^{-1}(P_0(x) + P_1(x)) + [2^{-1}(P_0(x) - P_1(x))]x^8
+\]
+
+Since $ \hat{\psi} $ are known value, we can calculate the value multiplied by $ 2^{-1} $ in advance and record it. We get the same result as above with only one addition and subtraction. This method is also applied in mapping ${(x^{4} - 1) * (x^{4} + 1)}$ to ${(x^{8} - 1)}$.
+
+\[
+    \hat{P_0}(x) = 2^{-1}P_0(x) = (\hat{f}_0(x) + \hat{f}_1(x)) * 2^{-1}(\hat{\psi}_0(x) + \hat{\psi}_1(x))
+\]
+\[
+    \hat{P_1}(x) = 2^{-1}P_1(x) = (\hat{f}_0(x) - \hat{f}_1(x)) * 2^{-1}(\hat{\psi}_0(x) - \hat{\psi}_1(x))
+\]
+\[
+    g = \hat{P_0}(x) + \hat{P_1}(x) + (\hat{P_0}(x) - \hat{P_1}(x))x^8
+\]
+
+The Cortex-M4 architectures provides the \textbf{smlad, smladx, smlsd, smlsdx} instructions that perform two 16-bit multiplications and two 32-bit additions/substractions in one cycle. We can fit the 96 multiplications into 48 instructions plus some add/substract operations to CRT map back to ${(x^{16} - 1)}$. This is the reason why we can perform the very efficient radix-17 butterfly on the Cortex-M4 architecture.
+
+$ A(x) = \sum_{i = 0}^{1529} a_ix^j $ is a polynomial in a ring $ Z_q[x] / (x^{1530} - 1) $. We CRT map $ (x^{1530} - 1) $ to $ (x^{90} - 1)*(x^{90} - \psi)* ... * (x^{90} - \psi^{16}) $. The DFT of this polynomial is 17 points which are degree-89 polynomials $ B_i(x) = \sum_{j = 0}^{89} b_{i\_j}x^j, i \in \{0,...,16\} $. The first coefficient of the 17 points are
+\[
+    b_{0\_0} = \sum_{i = 0}^{16} a_{90i} = a_0 + a_{90} + a_{180} + … + a_{1440}
+\]
+\[
+     b_{j\_0} = \sum_{i = 0}^{16} a_{90i}\psi^{ij}, j \in \{1, \ldots , 16\}, \psi^{17} = 1
+\]
+
+We can now view $ a_{90i} $ as a 16-degree polynomial and apply radix-17 FFT to get all the first coefficient of the 17 points. Hence, we can apply 90 groups of radix-17 FFT to get all the 17 points.
+
+
+
+\subsection{Radix-3 butterfly stage and base multiplication for degree-9 polynomials} % Add another subsection
+After performing the radix-17 butterfly, we do two radix-3 butterflies. Then there are 153 point-wise multiplications of degree-9 polynomials. The 153 point-wise multiplications are performed in different rings ${ Z_q[x] / ( x^{10} - \psi_i ) }$, so we have to hold different ${\psi_i}$ for each point-wise multiplication. 
+
+The implementation of radix-3 butterfly is the same as that mentioned in 1620 NTT. The polynomial multiplications in different rings are the simple schoolbook multiplications with using montgomery modular multiplication to save one register than barrett reduction.
+
+\end{document}

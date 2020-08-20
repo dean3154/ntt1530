@@ -180,156 +180,156 @@ polymul_10x10_153_mr_body:
     pop {r2-r12, pc}
 
 wpad:
-    .word 1262
-    .word -2247
-    .word 985
-    .word 1985
-    .word -2141
-    .word 156
-    .word 1969
-    .word -1756
-    .word -213
-    .word -1235
-    .word -1559
-    .word -1797
-    .word -1757
-    .word 98
-    .word 1659
-    .word -1574
-    .word -1723
-    .word -1294
-    .word 1787
-    .word -246
-    .word -1541
-    .word 297
-    .word -547
-    .word 250
-    .word -2083
-    .word 482
-    .word 1601
-    .word -1214
-    .word 1092
-    .word 122
-    .word 1481
-    .word -1491
-    .word 10
-    .word -2287
-    .word -348
-    .word -1956
-    .word 686
-    .word -2160
-    .word 1474
-    .word 1712
-    .word 124
-    .word -1836
-    .word 1194
-    .word 537
-    .word -1731
-    .word 762
-    .word 1750
-    .word 2079
-    .word -1217
-    .word 2025
-    .word -808
-    .word -1605
-    .word -1264
-    .word -1722
-    .word -1255
-    .word 70
-    .word 1185
-    .word 2155
-    .word 81
-    .word -2236
-    .word 854
-    .word 684
-    .word -1538
-    .word 868
-    .word 921
-    .word -1789
-    .word -832
-    .word 1656
-    .word -824
-    .word 1136
-    .word 211
-    .word -1347
-    .word 402
-    .word -1065
-    .word 663
-    .word 334
-    .word 1719
-    .word -2053
-    .word 780
-    .word 743
-    .word -1523
-    .word 567
-    .word -1879
-    .word 1312
-    .word 197
-    .word -1584
-    .word 1387
-    .word -887
-    .word 397
-    .word 490
-    .word -2181
-    .word -1177
-    .word -1233
-    .word 1477
-    .word -247
-    .word -1230
-    .word 1250
-    .word 1485
-    .word 1856
-    .word -1740
-    .word -598
-    .word -2253
-    .word 610
-    .word -1479
-    .word 869
-    .word 50
-    .word -1777
-    .word 1727
-    .word -1906
-    .word 527
-    .word 1379
-    .word -1812
-    .word -1161
-    .word -1618
-    .word 2
-    .word -622
-    .word 620
-    .word -1729
-    .word 572
-    .word 1157
-    .word 1213
-    .word -781
-    .word -432
-    .word 551
-    .word -1494
-    .word 943
-    .word -1171
-    .word 1492
-    .word -321
-    .word 1334
-    .word -1684
-    .word 350
-    .word -1998
-    .word 1593
-    .word 405
-    .word 1055
-    .word -2144
-    .word 1089
-    .word 237
-    .word -251
-    .word 14
-    .word 471
-    .word 431
-    .word -902
-    .word -876
-    .word 1567
-    .word -691
-    .word -1276
-    .word 2010
-    .word -734
-    .word -1083
-    .word 1670
-    .word -587
+    .word 1262  @ x^10 - w^0
+    .word -2247 @ x^10 - w^510
+    .word 985   @ x^10 - w^1020
+    .word 1985  @ x^10 - w^170
+    .word -2141 @ x^10 - w^680
+    .word 156   @ x^10 - w^1190
+    .word 1969  @ x^10 - w^340
+    .word -1756 @ x^10 - w^850
+    .word -213  @ x^10 - w^1360
+    .word -1235 @ x^10 - w^10
+    .word -1559 @ x^10 - w^520
+    .word -1797 @ x^10 - w^1030
+    .word -1757 @ x^10 - w^180
+    .word 98    @ x^10 - w^690
+    .word 1659  @ x^10 - w^1200
+    .word -1574 @ x^10 - w^350
+    .word -1723 @ x^10 - w^860
+    .word -1294 @ x^10 - w^1370
+    .word 1787  @ x^10 - w^20
+    .word -246  @ x^10 - w^530
+    .word -1541 @ x^10 - w^1040
+    .word 297   @ x^10 - w^190
+    .word -547  @ x^10 - w^700
+    .word 250   @ x^10 - w^1210
+    .word -2083 @ x^10 - w^360
+    .word 482   @ x^10 - w^870
+    .word 1601  @ x^10 - w^1380
+    .word -1214 @ x^10 - w^30
+    .word 1092  @ x^10 - w^540
+    .word 122   @ x^10 - w^1050
+    .word 1481  @ x^10 - w^200
+    .word -1491 @ x^10 - w^710
+    .word 10    @ x^10 - w^1220
+    .word -2287 @ x^10 - w^370
+    .word -348  @ x^10 - w^880
+    .word -1956 @ x^10 - w^1390
+    .word 686   @ x^10 - w^40
+    .word -2160 @ x^10 - w^550
+    .word 1474  @ x^10 - w^1060
+    .word 1712  @ x^10 - w^210
+    .word 124   @ x^10 - w^720
+    .word -1836 @ x^10 - w^1230
+    .word 1194  @ x^10 - w^380
+    .word 537   @ x^10 - w^890
+    .word -1731 @ x^10 - w^1400
+    .word 762   @ x^10 - w^50
+    .word 1750  @ x^10 - w^560
+    .word 2079  @ x^10 - w^1070
+    .word -1217 @ x^10 - w^220
+    .word 2025  @ x^10 - w^730
+    .word -808  @ x^10 - w^1240
+    .word -1605 @ x^10 - w^390
+    .word -1264 @ x^10 - w^900
+    .word -1722 @ x^10 - w^1410
+    .word -1255 @ x^10 - w^60
+    .word 70    @ x^10 - w^570
+    .word 1185  @ x^10 - w^1080
+    .word 2155  @ x^10 - w^230
+    .word 81    @ x^10 - w^740
+    .word -2236 @ x^10 - w^1250
+    .word 854   @ x^10 - w^400
+    .word 684   @ x^10 - w^910
+    .word -1538 @ x^10 - w^1420
+    .word 868   @ x^10 - w^70
+    .word 921   @ x^10 - w^580
+    .word -1789 @ x^10 - w^1090
+    .word -832  @ x^10 - w^240
+    .word 1656  @ x^10 - w^750
+    .word -824  @ x^10 - w^1260
+    .word 1136  @ x^10 - w^410
+    .word 211   @ x^10 - w^920
+    .word -1347 @ x^10 - w^1430
+    .word 402   @ x^10 - w^80
+    .word -1065 @ x^10 - w^590
+    .word 663   @ x^10 - w^1100
+    .word 334   @ x^10 - w^250
+    .word 1719  @ x^10 - w^760
+    .word -2053 @ x^10 - w^1270
+    .word 780   @ x^10 - w^420
+    .word 743   @ x^10 - w^930
+    .word -1523 @ x^10 - w^1440
+    .word 567   @ x^10 - w^90
+    .word -1879 @ x^10 - w^600
+    .word 1312  @ x^10 - w^1110
+    .word 197   @ x^10 - w^260
+    .word -1584 @ x^10 - w^770
+    .word 1387  @ x^10 - w^1280
+    .word -887  @ x^10 - w^430
+    .word 397   @ x^10 - w^940
+    .word 490   @ x^10 - w^1450
+    .word -2181 @ x^10 - w^100
+    .word -1177 @ x^10 - w^610
+    .word -1233 @ x^10 - w^1120
+    .word 1477  @ x^10 - w^270
+    .word -247  @ x^10 - w^780
+    .word -1230 @ x^10 - w^1290
+    .word 1250  @ x^10 - w^440
+    .word 1485  @ x^10 - w^950
+    .word 1856  @ x^10 - w^1460
+    .word -1740 @ x^10 - w^110
+    .word -598  @ x^10 - w^620
+    .word -2253 @ x^10 - w^1130
+    .word 610   @ x^10 - w^280
+    .word -1479 @ x^10 - w^790
+    .word 869   @ x^10 - w^1300
+    .word 50    @ x^10 - w^450
+    .word -1777 @ x^10 - w^960
+    .word 1727  @ x^10 - w^1470
+    .word -1906 @ x^10 - w^120
+    .word 527   @ x^10 - w^630
+    .word 1379  @ x^10 - w^1140
+    .word -1812 @ x^10 - w^290
+    .word -1161 @ x^10 - w^800
+    .word -1618 @ x^10 - w^1310
+    .word 2     @ x^10 - w^460
+    .word -622  @ x^10 - w^970
+    .word 620   @ x^10 - w^1480
+    .word -1729 @ x^10 - w^130
+    .word 572   @ x^10 - w^640
+    .word 1157  @ x^10 - w^1150
+    .word 1213  @ x^10 - w^300
+    .word -781  @ x^10 - w^810
+    .word -432  @ x^10 - w^1320
+    .word 551   @ x^10 - w^470
+    .word -1494 @ x^10 - w^980
+    .word 943   @ x^10 - w^1490
+    .word -1171 @ x^10 - w^140
+    .word 1492  @ x^10 - w^650
+    .word -321  @ x^10 - w^1160
+    .word 1334  @ x^10 - w^310
+    .word -1684 @ x^10 - w^820
+    .word 350   @ x^10 - w^1330
+    .word -1998 @ x^10 - w^480
+    .word 1593  @ x^10 - w^990
+    .word 405   @ x^10 - w^1500
+    .word 1055  @ x^10 - w^150
+    .word -2144 @ x^10 - w^660
+    .word 1089  @ x^10 - w^1170
+    .word 237   @ x^10 - w^320
+    .word -251  @ x^10 - w^830
+    .word 14    @ x^10 - w^1340
+    .word 471   @ x^10 - w^490
+    .word 431   @ x^10 - w^1000
+    .word -902  @ x^10 - w^1510
+    .word -876  @ x^10 - w^160
+    .word 1567  @ x^10 - w^670
+    .word -691  @ x^10 - w^1180
+    .word -1276 @ x^10 - w^330
+    .word 2010  @ x^10 - w^840
+    .word -734  @ x^10 - w^1350
+    .word -1083 @ x^10 - w^500
+    .word 1670  @ x^10 - w^1010
+    .word -587  @ x^10 - w^1520
